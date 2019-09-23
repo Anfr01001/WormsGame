@@ -33,15 +33,17 @@ namespace Template
         bool canBomb = true;
         bool InrangeToBomb = false;
 
-        float K, M;
+        
 
         //lista för bomber
         List<Bombs> BombLista = new List<Bombs>();
         List<Bombs> BombsToRemove = new List<Bombs>();
 
+        List<Partiklar> PartikelLista = new List<Partiklar>();
+
+
 
         List<Rectangle> LinjeLista = new List<Rectangle>();
-        float Linjedistance;
 
         public Game1()
         {
@@ -115,21 +117,39 @@ namespace Template
                 player.Collision(tile.Rectangle, map.Width, map.Height);
             }
 
+            foreach (Partiklar partikel in PartikelLista)
+            {
+                foreach (ColisionTiles tile in map.ColisionTiles)
+                {
+                partikel.Collision(tile.Rectangle, map.Width, map.Height);
+                }
+            }
+
+
+
+
 
             //kollar kollition mellan bomber och marken
             foreach (Bombs bomb in BombLista)
             {
                 foreach (ColisionTiles tile in map.ColisionTiles)
                 {
+
                     BombTräffade = bomb.Collision(tile.Rectangle, map.Width, map.Height, maparray);
                     if (BombTräffade)
                     {
-                    maparray = bomb.Maparray;
-                    BombsToRemove.Add(bomb);
-                    UpdateMap = true;
+
+                        for (int i = 0; i < 10; i++)
+                        {
+                            PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
+                        }
+
+                        maparray = bomb.Maparray;
+                        BombsToRemove.Add(bomb);
+                        UpdateMap = true;
+
+
                     }
-
-
                 }
             }
 
@@ -137,6 +157,11 @@ namespace Template
             foreach (Bombs bomb in BombsToRemove)
             {
                 BombLista.Remove(bomb);
+            }
+
+            foreach(Partiklar partikel in PartikelLista)
+            {
+                partikel.Update(gameTime);
             }
 
             BombsToRemove.Clear();
@@ -151,7 +176,7 @@ namespace Template
             //Ritar linje till player
              MState = Mouse.GetState();
              MousePos = new Vector2(MState.X, MState.Y);
-             DrawLine(MousePos, player.Pos);
+             InrangeToBomb = Linjer.DrawLine(MousePos, player.Pos, LinjeLista);
 
 
             //Skjuter bomber
@@ -162,6 +187,14 @@ namespace Template
                     new Vector2(player.Pos.X + 10, player.Pos.Y + 20), 
                     new Vector2(player.Pos.X + 10 - MousePos.X, player.Pos.Y + 20 - MousePos.Y),
                     Pixel));
+
+
+
+            }
+
+            if (Mouse.GetState().RightButton == ButtonState.Pressed)
+            {
+                PartikelLista.Add(new Partiklar(MousePos, Pixel));
             }
 
             if ((Mouse.GetState().LeftButton == ButtonState.Released) && canBomb == false) { canBomb = true; }
@@ -172,38 +205,24 @@ namespace Template
                 bomb.Update(gameTime);
             }
 
+
+            for (int i = 0; i < PartikelLista.Count; i++)
+            {
+                if (PartikelLista[i].Dead)
+                {
+                    PartikelLista.RemoveAt(i);
+                    i--;
+                }
+            }
+
+           // if (PartikelLista.Peek().Dead)
+           //     PartikelLista.DeList();
+            
             base.Update(gameTime);
         }
 
         // Funktion för att rita ut en linje mellan 2 föremål (ska flyttas till egen fil)
-        public void DrawLine(Vector2 V1, Vector2 V2)
-        {
-            Linjedistance = Vector2.Distance(V1, V2);
-            if (Linjedistance < 70) { InrangeToBomb = true; } else { InrangeToBomb = false; }
-
-            LinjeLista.Clear();
-
-             V2.X += 10;
-             V2.Y += 20;
-             K = (V1.Y - V2.Y) / (V1.X - V2.X);
-             M = V1.Y - K * V1.X;
-
-            if(V1.X < V2.X)
-            {
-                for(int x = (int)V1.X; x < V2.X; x++)
-                {
-                    LinjeLista.Add(new Rectangle(x, (int)(K * x + M),5,5));
-                }
-            } else
-            {
-                for (int x = (int)V2.X; x < V1.X; x++)
-                {
-                    LinjeLista.Add(new Rectangle(x, (int)(K * x + M), 5, 5));
-                }
-            }
-                
-
-        }
+       
 
 
         protected override void Draw(GameTime gameTime)
@@ -226,6 +245,11 @@ namespace Template
                spriteBatch.Draw(Pixel, rectangle, Color.Green);
                else
                spriteBatch.Draw(Pixel, rectangle, Color.Orange);
+            }
+
+            foreach (Partiklar partikel in PartikelLista)
+            {
+                partikel.Draw(spriteBatch);
             }
 
 

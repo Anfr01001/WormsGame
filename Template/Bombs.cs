@@ -14,7 +14,7 @@ namespace Template
         private Texture2D pixel;
         private Rectangle rectangle;
         const float GRAVITY = 15f;
-        private float speed = 2f;
+        private float speed = 4f;
 
         int mapArrayX, mapArrayY;
 
@@ -30,6 +30,11 @@ namespace Template
             this.velocity = velocity;
             rectangle = new Rectangle((int)pos.X, (int)pos.Y, 5, 5);
 
+        }
+
+        public Vector2 Getpos()
+        {
+            return pos;
         }
 
         public void Update(GameTime gameTime)
