@@ -15,7 +15,7 @@ namespace Template
         private Texture2D pixel;
         private Rectangle rectangle;
         const float GRAVITY = 15f;
-        private float speed = 2f;
+        private float speed = 5f;
         float liveTime = 0;
 
         public bool Dead {
@@ -39,7 +39,7 @@ namespace Template
             velocity.Y += GRAVITY * (float)gameTime.ElapsedGameTime.TotalSeconds;
             rectangle = new Rectangle((int)pos.X, (int)pos.Y, 5, 5);
 
-            Dead =  liveTime >= (5*60);
+            Dead =  liveTime >= (2*60);
 
             liveTime++;
         }

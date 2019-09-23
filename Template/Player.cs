@@ -12,7 +12,9 @@ namespace Template
         private float JumpForce = 5f;
         private float speed = 40;
 
-        private Vector2 pos = new Vector2(50, 50);
+        static Random r = new Random();
+
+        private Vector2 pos = new Vector2( r.Next(10,300), 50);
         private Vector2 velocity;
         private Rectangle rectangle;
         const float GRAVITY = 9.82f;
@@ -34,7 +36,7 @@ namespace Template
             set { Pixel = value; }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool active)
         {
             pos += velocity;
             rectangle = new Rectangle((int)pos.X, (int)pos.Y, 20, 40);
@@ -44,7 +46,14 @@ namespace Template
                 velocity.Y += 0.4f;
             }
             
-            Input(gameTime);
+            if (active)
+            {
+                Input(gameTime);
+            } else
+            {
+                velocity.X = 0f;
+            }
+            
         }
 
         private void Input(GameTime gameTime)
@@ -65,6 +74,7 @@ namespace Template
                 velocity.Y = -JumpForce;
                 hasJumped = true;
             }
+
         }
 
         public void Collision(Rectangle newrectangle, int xOffset, int yOffset)

@@ -18,6 +18,9 @@ namespace Template
         Texture2D Pixel;
 
         Player player;
+        Player player2;
+
+        Player ActivePlayer;
 
         // Mouse state för när man "Skjuter"
         MouseState MState;
@@ -69,7 +72,8 @@ namespace Template
             map = new Map();
 
             player = new Player();
-            
+            player2 = new Player();
+
             base.Initialize();
         }
 
@@ -109,12 +113,41 @@ namespace Template
         protected override void Update(GameTime gameTime)
         {
      
-            player.Update(gameTime);
+
+
+            MState = Mouse.GetState();
+            MousePos = new Vector2(MState.X, MState.Y);
+
+
+
+            if (Linjer.DistancePlayer(player.Pos, MousePos) < Linjer.DistancePlayer(player2.Pos, MousePos))
+                ActivePlayer = player;
+            else
+                ActivePlayer = player2;
+
+
+            if (ActivePlayer == player)
+            {
+                player.Update(gameTime,true);
+                player2.Update(gameTime, false);
+            } else
+            {
+                player.Update(gameTime, false);
+                player2.Update(gameTime, true);
+            }
+                
+                
+
 
             //Kollar kollition mellan spelare och marken
-            foreach(ColisionTiles tile in map.ColisionTiles)
+            foreach (ColisionTiles tile in map.ColisionTiles)
             {
                 player.Collision(tile.Rectangle, map.Width, map.Height);
+            }
+
+            foreach (ColisionTiles tile in map.ColisionTiles)
+            {
+                player2.Collision(tile.Rectangle, map.Width, map.Height);
             }
 
             foreach (Partiklar partikel in PartikelLista)
@@ -125,8 +158,10 @@ namespace Template
                 }
             }
 
+            
 
-
+            //ritar linjer
+            InrangeToBomb = Linjer.DrawLine(MousePos, ActivePlayer.Pos, LinjeLista);
 
 
             //kollar kollition mellan bomber och marken
@@ -173,10 +208,7 @@ namespace Template
                 UpdateMap = false;
             }
 
-            //Ritar linje till player
-             MState = Mouse.GetState();
-             MousePos = new Vector2(MState.X, MState.Y);
-             InrangeToBomb = Linjer.DrawLine(MousePos, player.Pos, LinjeLista);
+
 
 
             //Skjuter bomber
@@ -184,8 +216,8 @@ namespace Template
             {
                 canBomb = false;
                 BombLista.Add(new Bombs(
-                    new Vector2(player.Pos.X + 10, player.Pos.Y + 20), 
-                    new Vector2(player.Pos.X + 10 - MousePos.X, player.Pos.Y + 20 - MousePos.Y),
+                    new Vector2(ActivePlayer.Pos.X + 10, ActivePlayer.Pos.Y + 20), 
+                    new Vector2(ActivePlayer.Pos.X + 10 - MousePos.X, ActivePlayer.Pos.Y + 20 - MousePos.Y),
                     Pixel));
 
 
@@ -233,6 +265,7 @@ namespace Template
             
             map.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            player2.Draw(spriteBatch);
 
             foreach (Bombs bomb in BombLista)
             {

@@ -12,6 +12,10 @@ namespace Template
         static float Linjedistance;
         static float K, M;
 
+        static public float DistancePlayer(Vector2 player, Vector2 MousePos)
+        {
+            return Vector2.Distance(player, MousePos);
+        }
 
         static public bool DrawLine(Vector2 V1, Vector2 V2, List<Rectangle> LinjeLista)
         {
