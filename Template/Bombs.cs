@@ -7,20 +7,18 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Template
 {
-    class Bombs
+    class Bombs : BasBlock
     {
-        private Vector2 pos;
-        private Vector2 velocity;
-        private Texture2D pixel;
-        private Rectangle rectangle;
+
         const float GRAVITY = 15f;
         private float speed = 4f;
 
         int mapArrayX, mapArrayY;
 
+        
+
 
         //Spräng
-         Vector2 TopRightCorner, TopLeftCorner, BottomRightCorner, BottomLeftCorner;
         int[,] maparray;
 
         public Bombs(Vector2 orgpos, Vector2 velocity, Texture2D pixel)
@@ -30,6 +28,7 @@ namespace Template
             this.velocity = velocity;
             rectangle = new Rectangle((int)pos.X, (int)pos.Y, 5, 5);
 
+            color = Color.Red;
         }
 
         public Vector2 Getpos()
@@ -46,10 +45,6 @@ namespace Template
    
         }
 
-        public void Draw (SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(pixel, rectangle, Color.Red);
-        }
 
        
         public int[,] Maparray {
@@ -94,10 +89,5 @@ namespace Template
             return false;
         }
 
-
-        private void spawnParticles()
-        {
-
-        }
     }
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Template
 {
-    class Player
+    class Player : BasBlock
     {
 
         private float JumpForce = 5f;
@@ -14,19 +14,18 @@ namespace Template
 
         static Random r = new Random();
 
-        private Vector2 pos = new Vector2( r.Next(10,300), 50);
-        private Vector2 velocity;
-        private Rectangle rectangle;
         const float GRAVITY = 9.82f;
 
         private bool hasJumped = false;
 
-        public Vector2 Pos {
-            get { return pos; }
+
+        public Rectangle Rectangle {
+            get { return rectangle;  }
         }
-
         public Player() {
+            pos = new Vector2(r.Next(10, 300), 50);
 
+            color = Color.Yellow;
         }
 
         private static Texture2D Pixel;
@@ -53,7 +52,7 @@ namespace Template
             {
                 velocity.X = 0f;
             }
-            
+
         }
 
         private void Input(GameTime gameTime)
@@ -110,10 +109,6 @@ namespace Template
   
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Pixel, rectangle, Color.Yellow);
-        }
 
 
     }

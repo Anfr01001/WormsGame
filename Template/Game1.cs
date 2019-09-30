@@ -6,11 +6,9 @@ using System.Collections.Generic;
 
 
 
-namespace Template
-{
+namespace Template {
 
-    public class Game1 : Game
-    {
+    public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -36,7 +34,7 @@ namespace Template
         bool canBomb = true;
         bool InrangeToBomb = false;
 
-        
+
 
         //lista för bomber
         List<Bombs> BombLista = new List<Bombs>();
@@ -44,49 +42,48 @@ namespace Template
 
         List<Partiklar> PartikelLista = new List<Partiklar>();
 
-
-
         List<Rectangle> LinjeLista = new List<Rectangle>();
 
-        public Game1()
-        {
+
+        public Game1() {
             graphics = new GraphicsDeviceManager(this);
 
             //Skärmstorlek
-            graphics.PreferredBackBufferWidth = 800;  
-            graphics.PreferredBackBufferHeight = 500;   
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 500;
             Content.RootDirectory = "Content";
         }
 
+
         //skapar pixel som används som texture
-        void CreatePixel()
-        {
+        void CreatePixel() {
             Pixel = new Texture2D(GraphicsDevice, 1, 1);
             Pixel.SetData(new Color[] { Color.White });
         }
 
 
-        protected override void Initialize()
-        {
+        protected override void Initialize() {
             this.IsMouseVisible = true;
             map = new Map();
 
             player = new Player();
             player2 = new Player();
 
+            Assets.CreatePixel(GraphicsDevice);
+
             base.Initialize();
         }
 
 
-        protected override void LoadContent()
-        {
-            
+        protected override void LoadContent() {
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
             CreatePixel();
+
             
+
             // "ge texture till tiles och player"
             Tiles.Texture = Pixel;
-            Player.Texture = Pixel;
 
             List<int> ints = new List<int>();
 
@@ -96,23 +93,18 @@ namespace Template
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
             });
 
-
             map.Generate(maparray, 10);
 
+        }
 
+
+        protected override void UnloadContent() {
 
         }
 
 
-        protected override void UnloadContent()
-        {
-          
-        }
+        protected override void Update(GameTime gameTime) {
 
-
-        protected override void Update(GameTime gameTime)
-        {
-     
 
 
             MState = Mouse.GetState();
@@ -126,56 +118,40 @@ namespace Template
                 ActivePlayer = player2;
 
 
-            if (ActivePlayer == player)
-            {
-                player.Update(gameTime,true);
+            if (ActivePlayer == player) {
+                player.Update(gameTime, true);
                 player2.Update(gameTime, false);
-            } else
-            {
+            } else {
                 player.Update(gameTime, false);
                 player2.Update(gameTime, true);
             }
-                
-                
+
 
 
             //Kollar kollition mellan spelare och marken
-            foreach (ColisionTiles tile in map.ColisionTiles)
-            {
+            foreach (ColisionTiles tile in map.ColisionTiles) {
                 player.Collision(tile.Rectangle, map.Width, map.Height);
             }
 
-            foreach (ColisionTiles tile in map.ColisionTiles)
-            {
+            foreach (ColisionTiles tile in map.ColisionTiles) {
                 player2.Collision(tile.Rectangle, map.Width, map.Height);
             }
 
-            foreach (Partiklar partikel in PartikelLista)
-            {
-                foreach (ColisionTiles tile in map.ColisionTiles)
-                {
-                partikel.Collision(tile.Rectangle, map.Width, map.Height);
+            foreach (Partiklar partikel in PartikelLista) {
+                foreach (ColisionTiles tile in map.ColisionTiles) {
+                    partikel.Collision(tile.Rectangle, map.Width, map.Height);
                 }
             }
 
-            
-
-            //ritar linjer
-            InrangeToBomb = Linjer.DrawLine(MousePos, ActivePlayer.Pos, LinjeLista);
-
 
             //kollar kollition mellan bomber och marken
-            foreach (Bombs bomb in BombLista)
-            {
-                foreach (ColisionTiles tile in map.ColisionTiles)
-                {
+            foreach (Bombs bomb in BombLista) {
+                foreach (ColisionTiles tile in map.ColisionTiles) {
 
                     BombTräffade = bomb.Collision(tile.Rectangle, map.Width, map.Height, maparray);
-                    if (BombTräffade)
-                    {
+                    if (BombTräffade) {
 
-                        for (int i = 0; i < 10; i++)
-                        {
+                        for (int i = 0; i < 10; i++) {
                             PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
                         }
 
@@ -186,24 +162,48 @@ namespace Template
 
                     }
                 }
+                
+                if (ActivePlayer == player) {
+                    if (bomb.Collision(player2.Rectangle, map.Width, map.Height, maparray)) {
+                        for (int i = 0; i < 10; i++) {
+                            PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
+                        }
+
+                        maparray = bomb.Maparray;
+                        BombsToRemove.Add(bomb);
+                        UpdateMap = true;
+                    }
+                } else if (bomb.Collision(player.Rectangle, map.Width, map.Height, maparray)) {
+                    for (int i = 0; i < 10; i++) {
+                        PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
+                    }
+
+                    maparray = bomb.Maparray;
+                    BombsToRemove.Add(bomb);
+                    UpdateMap = true;
+                }
+                
             }
 
+
+
+            //ritar linjer
+            InrangeToBomb = Linjer.DrawLine(MousePos, ActivePlayer.Pos, LinjeLista);
+
+
             //Tar bort bomber som har "Sprängrs"
-            foreach (Bombs bomb in BombsToRemove)
-            {
+            foreach (Bombs bomb in BombsToRemove) {
                 BombLista.Remove(bomb);
             }
 
-            foreach(Partiklar partikel in PartikelLista)
-            {
+            foreach (Partiklar partikel in PartikelLista) {
                 partikel.Update(gameTime);
             }
 
             BombsToRemove.Clear();
 
             //Uppdaterar mapen med sprängningarna
-            if (UpdateMap)
-            {
+            if (UpdateMap) {
                 map.Generate(maparray, 10, true);
                 UpdateMap = false;
             }
@@ -212,82 +212,68 @@ namespace Template
 
 
             //Skjuter bomber
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && canBomb && InrangeToBomb)
-            {
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && canBomb && InrangeToBomb) {
                 canBomb = false;
                 BombLista.Add(new Bombs(
-                    new Vector2(ActivePlayer.Pos.X + 10, ActivePlayer.Pos.Y + 20), 
+                    new Vector2(ActivePlayer.Pos.X + 10, ActivePlayer.Pos.Y + 20),
                     new Vector2(ActivePlayer.Pos.X + 10 - MousePos.X, ActivePlayer.Pos.Y + 20 - MousePos.Y),
                     Pixel));
-
-
-
             }
 
-            if (Mouse.GetState().RightButton == ButtonState.Pressed)
-            {
+            if (Mouse.GetState().RightButton == ButtonState.Pressed) {
                 PartikelLista.Add(new Partiklar(MousePos, Pixel));
             }
 
             if ((Mouse.GetState().LeftButton == ButtonState.Released) && canBomb == false) { canBomb = true; }
 
             //Uppdatera bombers pos mm
-            foreach(Bombs  bomb in BombLista)
-            {
+            foreach (Bombs bomb in BombLista) {
                 bomb.Update(gameTime);
             }
 
 
-            for (int i = 0; i < PartikelLista.Count; i++)
-            {
-                if (PartikelLista[i].Dead)
-                {
+            for (int i = 0; i < PartikelLista.Count; i++) {
+                if (PartikelLista[i].Dead) {
                     PartikelLista.RemoveAt(i);
                     i--;
                 }
             }
 
-           // if (PartikelLista.Peek().Dead)
-           //     PartikelLista.DeList();
-            
+
             base.Update(gameTime);
         }
 
         // Funktion för att rita ut en linje mellan 2 föremål (ska flyttas till egen fil)
-       
 
 
-        protected override void Draw(GameTime gameTime)
-        {
+
+        protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            
+
             map.Draw(spriteBatch);
             player.Draw(spriteBatch);
             player2.Draw(spriteBatch);
 
-            foreach (Bombs bomb in BombLista)
-            {
+            foreach (Bombs bomb in BombLista) {
                 bomb.Draw(spriteBatch);
             }
 
-            foreach(Rectangle rectangle in LinjeLista)
-            {
-               if(canBomb && InrangeToBomb)
-               spriteBatch.Draw(Pixel, rectangle, Color.Green);
-               else
-               spriteBatch.Draw(Pixel, rectangle, Color.Orange);
+            foreach (Rectangle rectangle in LinjeLista) {
+                if (canBomb && InrangeToBomb)
+                    spriteBatch.Draw(Pixel, rectangle, Color.Green);
+                else
+                    spriteBatch.Draw(Pixel, rectangle, Color.Orange);
             }
 
-            foreach (Partiklar partikel in PartikelLista)
-            {
+            foreach (Partiklar partikel in PartikelLista) {
                 partikel.Draw(spriteBatch);
             }
 
 
             spriteBatch.End();
-            
+
 
             base.Draw(gameTime);
         }
