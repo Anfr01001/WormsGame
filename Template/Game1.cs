@@ -75,6 +75,8 @@ namespace Template {
             PlayerLista.Add(new Player(2));
             PlayerLista.Add(new Player(2));
 
+            ActivePlayer = PlayerLista[0];
+
 
             base.Initialize();
         }
@@ -115,11 +117,14 @@ namespace Template {
             MState = Mouse.GetState();
             MousePos = new Vector2(MState.X, MState.Y);
 
-            ActivePlayer = PlayerLista[0]; // temp
-            foreach (Player player in PlayerLista) {
-                if (Linjer.DistancePlayer(player.Pos, MousePos) < Linjer.DistancePlayer(ActivePlayer.Pos, MousePos))
-                    ActivePlayer = player;
+            
+            if(Mouse.GetState().RightButton == ButtonState.Pressed) {
+                foreach (Player player in PlayerLista) {
+                    if (Linjer.DistancePlayer(player.Pos, MousePos) < Linjer.DistancePlayer(ActivePlayer.Pos, MousePos))
+                        ActivePlayer = player;
+                }
             }
+
 
 
             foreach (Player player in PlayerLista) {
@@ -201,11 +206,12 @@ namespace Template {
 
 
             //ritar linjer
+         
             InrangeToBomb = Linjer.DrawLine(MousePos, ActivePlayer.Pos, LinjeLista);
-
+          
 
             //Tar bort bomber som har "Sprängrs"
-            foreach (Bombs bomb in BombsToRemove) {
+                foreach (Bombs bomb in BombsToRemove) {
                 BombLista.Remove(bomb);
             }
             BombsToRemove.Clear();
@@ -230,10 +236,6 @@ namespace Template {
                     new Vector2(ActivePlayer.Pos.X + 10, ActivePlayer.Pos.Y + 20),
                     new Vector2(ActivePlayer.Pos.X + 10 - MousePos.X, ActivePlayer.Pos.Y + 20 - MousePos.Y),
                     Pixel));
-            }
-
-            if (Mouse.GetState().RightButton == ButtonState.Pressed) {
-                PartikelLista.Add(new Partiklar(MousePos, Pixel));
             }
 
             if ((Mouse.GetState().LeftButton == ButtonState.Released) && canBomb == false) { canBomb = true; }
