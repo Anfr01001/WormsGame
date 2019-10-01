@@ -76,9 +76,6 @@ namespace Template {
             PlayerLista.Add(new Player(2));
 
 
-
-
-
             base.Initialize();
         }
 

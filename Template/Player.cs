@@ -33,24 +33,20 @@ namespace Template
             if (team == 1) {
                 color = Color.Yellow;
                 pos = new Vector2(r.Next(20, 380), 50);
+                texture = Assets.PlayerTextureRight;
             } else if (team == 2) {
                 color = Color.Purple;
                 pos = new Vector2(r.Next(380, 780), 50);
+                texture = Assets.PlayerTexture;
             }
-               
 
             uiFont = Assets.UIFont;
         }
 
-        private static Texture2D Pixel;
 
-        public static Texture2D Texture {
-            protected get { return Pixel; }
-            set { Pixel = value; }
-        }
 
         public void TakeExplotionDamage (float Distance) {
-            hp -= (int)(damage - (Distance / 5) );
+            hp -= (int)(damage - (Distance/10));
         }
 
         private void DrawAmmo(SpriteBatch spriteBatch) {
@@ -70,7 +66,7 @@ namespace Template
         public void Update(GameTime gameTime, bool active)
         {
             pos += velocity;
-            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 20, 40);
+            rectangle = new Rectangle((int)pos.X, (int)pos.Y, 35, 40);
 
             //gravitation
             if (velocity.Y < 10) {
@@ -95,9 +91,11 @@ namespace Template
         {
             if (Keyboard.GetState().IsKeyDown(Keys.D)) {
                 velocity.X = (float)gameTime.ElapsedGameTime.TotalSeconds * speed;
+                texture = Assets.PlayerTextureRight;
             } else if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 velocity.X = -(float)gameTime.ElapsedGameTime.TotalSeconds * speed;
+                texture = Assets.PlayerTexture;
             } else
             {
                 velocity.X = 0f;

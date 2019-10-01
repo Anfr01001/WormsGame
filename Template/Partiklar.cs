@@ -14,10 +14,6 @@ namespace Template
         private float speed = 5f;
         float liveTime = 0;
 
-        public bool Dead {
-            get;
-            private set;
-        }
         static Random r = new Random();
 
         double TimeToBeAlive = r.Next(0,4);

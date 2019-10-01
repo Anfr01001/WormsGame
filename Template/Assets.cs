@@ -12,6 +12,8 @@ namespace Template {
 
         public static Texture2D Pixel;
         public static SpriteFont UIFont;
+        public static Texture2D PlayerTexture;
+        public static Texture2D PlayerTextureRight;
 
         public static void CreatePixel(GraphicsDevice device) {
 
@@ -22,6 +24,8 @@ namespace Template {
 
         public static void LoadContent(ContentManager content) {
             UIFont = content.Load<SpriteFont>("UIFont");
+            PlayerTexture = content.Load<Texture2D>("Worm");
+            PlayerTextureRight = content.Load<Texture2D>("WormRight"); 
         }
 
 

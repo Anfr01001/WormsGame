@@ -15,9 +15,16 @@ namespace Template {
         protected Rectangle rectangle;
         protected Color color = Color.White;
         protected bool dead = false;
+
+        protected Texture2D texture = Assets.Pixel;
         public Color Color {
            get { return color; }
            set { color = value; }
+        }
+
+        public Texture2D Texture {
+            get { return texture; }
+            set { texture = value;  }
         }
 
         public bool Dead {
@@ -35,7 +42,7 @@ namespace Template {
 
 
         public virtual void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(Assets.Pixel, rectangle, color);
+            spriteBatch.Draw(texture, rectangle, color);
         }
     }
 }
