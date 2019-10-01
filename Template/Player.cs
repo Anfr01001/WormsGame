@@ -11,6 +11,8 @@ namespace Template
 
         private float JumpForce = 5f;
         private float speed = 40;
+        int hp = 100;
+        int damage = 20;
 
         static Random r = new Random();
 
@@ -18,14 +20,26 @@ namespace Template
 
         private bool hasJumped = false;
 
+        SpriteFont uiFont;
+
+
 
         public Rectangle Rectangle {
             get { return rectangle;  }
         }
-        public Player() {
-            pos = new Vector2(r.Next(10, 300), 50);
+        public Player(int team) {
+            //pos = new Vector2(r.Next(10, 300), 50);
 
-            color = Color.Yellow;
+            if (team == 1) {
+                color = Color.Yellow;
+                pos = new Vector2(r.Next(20, 380), 50);
+            } else if (team == 2) {
+                color = Color.Purple;
+                pos = new Vector2(r.Next(380, 780), 50);
+            }
+               
+
+            uiFont = Assets.UIFont;
         }
 
         private static Texture2D Pixel;
@@ -33,6 +47,24 @@ namespace Template
         public static Texture2D Texture {
             protected get { return Pixel; }
             set { Pixel = value; }
+        }
+
+        public void TakeExplotionDamage (float Distance) {
+            hp -= (int)(damage - (Distance / 5) );
+        }
+
+        private void DrawAmmo(SpriteBatch spriteBatch) {
+
+            Vector2 position = pos;
+            position.Y -= 25;
+            string text = hp.ToString();
+
+            spriteBatch.DrawString(uiFont, text, position, Color.White);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch) {
+            base.Draw(spriteBatch);
+            DrawAmmo(spriteBatch);
         }
 
         public void Update(GameTime gameTime, bool active)
@@ -51,6 +83,10 @@ namespace Template
             } else
             {
                 velocity.X = 0f;
+            }
+
+            if (hp <= 0) {
+                dead = true;
             }
 
         }

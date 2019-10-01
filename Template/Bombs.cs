@@ -15,8 +15,6 @@ namespace Template
 
         int mapArrayX, mapArrayY;
 
-        
-
 
         //Spräng
         int[,] maparray;
@@ -29,6 +27,8 @@ namespace Template
             rectangle = new Rectangle((int)pos.X, (int)pos.Y, 5, 5);
 
             color = Color.Red;
+
+            
         }
 
         public Vector2 Getpos()
@@ -51,6 +51,8 @@ namespace Template
             get { return maparray; }
             set { maparray = value; }
         }
+
+
 
         public bool Collision(Rectangle newrectangle, int xOffset, int yOffset, int[,] maparray)
         {
@@ -76,6 +78,7 @@ namespace Template
                      }
                 }
 
+                
                 return true;
             }
 

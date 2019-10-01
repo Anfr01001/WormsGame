@@ -11,6 +11,7 @@ namespace Template {
     static class Assets {
 
         public static Texture2D Pixel;
+        public static SpriteFont UIFont;
 
         public static void CreatePixel(GraphicsDevice device) {
 
@@ -19,6 +20,10 @@ namespace Template {
 
         }
 
-        
+        public static void LoadContent(ContentManager content) {
+            UIFont = content.Load<SpriteFont>("UIFont");
+        }
+
+
     }
 }

@@ -15,9 +15,6 @@ namespace Template {
         //Används som texture på allt
         Texture2D Pixel;
 
-        Player player;
-        Player player2;
-
         Player ActivePlayer;
 
         // Mouse state för när man "Skjuter"
@@ -44,6 +41,9 @@ namespace Template {
 
         List<Rectangle> LinjeLista = new List<Rectangle>();
 
+        List<Player> PlayerLista = new List<Player>();
+        List<Player> PlayersToRemove = new List<Player>();
+
 
         public Game1() {
             graphics = new GraphicsDeviceManager(this);
@@ -66,10 +66,18 @@ namespace Template {
             this.IsMouseVisible = true;
             map = new Map();
 
-            player = new Player();
-            player2 = new Player();
+            
+            Assets.LoadContent(Content);
 
-            Assets.CreatePixel(GraphicsDevice);
+            PlayerLista.Add(new Player(1));
+            PlayerLista.Add(new Player(1));
+
+            PlayerLista.Add(new Player(2));
+            PlayerLista.Add(new Player(2));
+
+
+
+
 
             base.Initialize();
         }
@@ -80,7 +88,7 @@ namespace Template {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             CreatePixel();
 
-            
+            Assets.CreatePixel(GraphicsDevice);
 
             // "ge texture till tiles och player"
             Tiles.Texture = Pixel;
@@ -110,32 +118,40 @@ namespace Template {
             MState = Mouse.GetState();
             MousePos = new Vector2(MState.X, MState.Y);
 
-
-
-            if (Linjer.DistancePlayer(player.Pos, MousePos) < Linjer.DistancePlayer(player2.Pos, MousePos))
-                ActivePlayer = player;
-            else
-                ActivePlayer = player2;
-
-
-            if (ActivePlayer == player) {
-                player.Update(gameTime, true);
-                player2.Update(gameTime, false);
-            } else {
-                player.Update(gameTime, false);
-                player2.Update(gameTime, true);
+            ActivePlayer = PlayerLista[0]; // temp
+            foreach (Player player in PlayerLista) {
+                if (Linjer.DistancePlayer(player.Pos, MousePos) < Linjer.DistancePlayer(ActivePlayer.Pos, MousePos))
+                    ActivePlayer = player;
             }
+
+
+            foreach (Player player in PlayerLista) {
+                if (player == ActivePlayer) {
+                    player.Update(gameTime, true);
+                } else {
+                    player.Update(gameTime, false);
+                }
+
+            }
+
+            foreach (Player player in PlayerLista) {
+                if (player.Dead) { PlayersToRemove.Add(player); }
+            }
+
+            foreach (Player player in PlayersToRemove) {
+                PlayerLista.Remove(player);
+            }
+            BombsToRemove.Clear();
 
 
 
             //Kollar kollition mellan spelare och marken
             foreach (ColisionTiles tile in map.ColisionTiles) {
-                player.Collision(tile.Rectangle, map.Width, map.Height);
+                foreach (Player player in PlayerLista) {
+                    player.Collision(tile.Rectangle, map.Width, map.Height);
+                }
             }
 
-            foreach (ColisionTiles tile in map.ColisionTiles) {
-                player2.Collision(tile.Rectangle, map.Width, map.Height);
-            }
 
             foreach (Partiklar partikel in PartikelLista) {
                 foreach (ColisionTiles tile in map.ColisionTiles) {
@@ -152,19 +168,25 @@ namespace Template {
                     if (BombTräffade) {
 
                         for (int i = 0; i < 10; i++) {
-                            PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
+                            PartikelLista.Add(new Partiklar(bomb.Pos, Pixel));
                         }
 
                         maparray = bomb.Maparray;
                         BombsToRemove.Add(bomb);
                         UpdateMap = true;
 
-
+                        foreach (Player player in PlayerLista) {
+                            if (Vector2.Distance(player.Pos, bomb.Pos) < 70) {
+                                player.TakeExplotionDamage(Vector2.Distance(player.Pos, bomb.Pos));
+                            }
+                        }
+                       
                     }
                 }
-                
-                if (ActivePlayer == player) {
-                    if (bomb.Collision(player2.Rectangle, map.Width, map.Height, maparray)) {
+
+
+                foreach (Player player in PlayerLista) {
+                    if (bomb.Collision(player.Rectangle, map.Width, map.Height, maparray) && player != ActivePlayer) {
                         for (int i = 0; i < 10; i++) {
                             PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
                         }
@@ -172,15 +194,9 @@ namespace Template {
                         maparray = bomb.Maparray;
                         BombsToRemove.Add(bomb);
                         UpdateMap = true;
-                    }
-                } else if (bomb.Collision(player.Rectangle, map.Width, map.Height, maparray)) {
-                    for (int i = 0; i < 10; i++) {
-                        PartikelLista.Add(new Partiklar(bomb.Getpos(), Pixel));
-                    }
 
-                    maparray = bomb.Maparray;
-                    BombsToRemove.Add(bomb);
-                    UpdateMap = true;
+                        player.TakeExplotionDamage(0f);
+                    }
                 }
                 
             }
@@ -195,20 +211,19 @@ namespace Template {
             foreach (Bombs bomb in BombsToRemove) {
                 BombLista.Remove(bomb);
             }
+            BombsToRemove.Clear();
 
+            //Uppdatera partiklar 
             foreach (Partiklar partikel in PartikelLista) {
                 partikel.Update(gameTime);
             }
-
-            BombsToRemove.Clear();
+            
 
             //Uppdaterar mapen med sprängningarna
             if (UpdateMap) {
                 map.Generate(maparray, 10, true);
                 UpdateMap = false;
             }
-
-
 
 
             //Skjuter bomber
@@ -243,7 +258,6 @@ namespace Template {
             base.Update(gameTime);
         }
 
-        // Funktion för att rita ut en linje mellan 2 föremål (ska flyttas till egen fil)
 
 
 
@@ -253,8 +267,9 @@ namespace Template {
 
 
             map.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-            player2.Draw(spriteBatch);
+            foreach (Player player in PlayerLista) {
+                player.Draw(spriteBatch);
+            }
 
             foreach (Bombs bomb in BombLista) {
                 bomb.Draw(spriteBatch);
